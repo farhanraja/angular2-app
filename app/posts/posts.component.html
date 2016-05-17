@@ -1,0 +1,47 @@
+<h1>Posts</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <select class="form-control" #u (change)="updatePosts(u.value)">
+           <option value='-1'>Select a User...</option> 
+           <option *ngFor="#user of users" value={{user.id}}>{{ user.name }}</option>            
+        </select>
+        
+        <pagination [items]="posts" [page-size]="10" (page-changed)="onPageChanged($event)"></pagination>
+        
+        <ul class="list-group">
+            <li *ngFor="#post of pagedPosts" class="list-group-item" (click)="showPost(post)">
+                {{ post.title }}
+            </li>
+        </ul>
+        <spinner [visible]="isLoading"></spinner>
+    </div>
+    
+    <div class="col-md-6" *ngIf="selectedPost">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{selectedPost.title}}</h3>
+            </div>
+            <div class="panel-body">
+                {{selectedPost.body}}
+                
+                <hr/>
+                <spinner [visible]="isCommentLoading"></spinner>
+                
+                <div class="media" *ngFor="#comment of comments">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" style="border-radius:100%;" 
+                                src="http://lorempixel.com/80/80/people?random={{comment.id}}" alt="...">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ comment.name }}</h4>
+                        {{ comment.body }}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
